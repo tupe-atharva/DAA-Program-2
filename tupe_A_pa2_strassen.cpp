@@ -12,6 +12,7 @@ int main(int argc, char*argv[]){
     }
 
     int n = stoi(argv[1]); // Talking the command line argument and storing the first value to n after converting it from a string to an integer (since the command line values are treated as string values).
+    // Stoi function  : string to integer : converts a string to a integer.
     
     // Check for integer overflow within the matrix
     int max_val = INT_MAX / n;
@@ -23,8 +24,8 @@ int main(int argc, char*argv[]){
 
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
-            A[i][j] = rand() % max_val;
-            B[i][j] = rand() % max_val;
+            A[i][j] = rand() % max_val; // Take modulus to get the remainder
+            B[i][j] = rand() % max_val; // Take modulus to get the remainder
         }
     }
 
@@ -56,6 +57,7 @@ int main(int argc, char*argv[]){
             }
         }
     }
+    // This is a O(N^3) solution since we are using 3 nested for loops.
 
     // Printing the resulting C matrix :
     cout << "Matrix C : " << endl;

@@ -5,72 +5,76 @@
 using namespace std;
 
 // Helper Function 1 : addMAtrix
+// Takes 2 matrices A and B as input and adds their elements
 vector<vector<long long>> addMatrix(
     const vector<vector<long long>>& A,
     const vector<vector<long long>>& B) 
-    {
-        int n = A.size();
-        vector<vector<long long>> C(n, vector<long long>(n));
-        for (int i = 0; i < n; i++)
-            for (int j = 0; j < n; j++)
-                C[i][j] = A[i][j] + B[i][j];
-        return C;
-    }
+{
+    int n = A.size();
+    vector<vector<long long>> C(n, vector<long long>(n));
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            C[i][j] = A[i][j] + B[i][j];
+    return C;
+}
 
 // Helper function 2 : subMatrix
+// Takes 2 matrices A and B as input and subtracts their elements
+
 vector<vector<long long>> subMatrix(
     const vector<vector<long long>>& A,
     const vector<vector<long long>>& B) 
-    {
-        int n = A.size();
-        vector<vector<long long>> C(n, vector<long long>(n));
-        for (int i = 0; i < n; i++)
-            for (int j = 0; j < n; j++)
-                C[i][j] = A[i][j] - B[i][j];
-        return C;
-    }
+{
+    int n = A.size();
+    vector<vector<long long>> C(n, vector<long long>(n));
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            C[i][j] = A[i][j] - B[i][j];
+    return C;
+}
 
 // Helper function 3 : splitMatrix
+// Takes 2 matrices A and B as input and splits them into A11, A12, A21, A22 and each of them have size n/2;
+
 void splitMatrix(const vector<vector<long long>>& A,
     vector<vector<long long>>& A11,
     vector<vector<long long>>& A12,
     vector<vector<long long>>& A21,
     vector<vector<long long>>& A22) 
-    {
-        int n = A.size() / 2;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                A11[i][j] = A[i][j];
-                A12[i][j] = A[i][j + n];
-                A21[i][j] = A[i + n][j];
-                A22[i][j] = A[i + n][j + n];
-            }
+{
+    int n = A.size() / 2;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            A11[i][j] = A[i][j]; // Left top corner
+            A12[i][j] = A[i][j + n]; // Right top corner
+            A21[i][j] = A[i + n][j]; // Bottom left corner
+            A22[i][j] = A[i + n][j + n]; // Bottom right corner
         }
     }
+}
 
 
 // Helper function 4 : combineMatrix
+// This helper function takes 4 submatrices ie. C11, C12, C21, C22 as input and combines them 
 vector<vector<long long>> combineMatrix(
     const vector<vector<long long>>& C11,
     const vector<vector<long long>>& C12,
     const vector<vector<long long>>& C21,
     const vector<vector<long long>>& C22) 
-    {
-        int n = C11.size();
-        vector<vector<long long>> C(2 * n, vector<long long>(2 * n));
+{
+    int n = C11.size();
+    vector<vector<long long>> C(2 * n, vector<long long>(2 * n));
 
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                C[i][j] = C11[i][j];
-                C[i][j + n] = C12[i][j];
-                C[i + n][j] = C21[i][j];
-                C[i + n][j + n] = C22[i][j];
-            }
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            C[i][j] = C11[i][j];
+            C[i][j + n] = C12[i][j];
+            C[i + n][j] = C21[i][j];
+            C[i + n][j + n] = C22[i][j];
         }
-        return C;
     }
-
-
+    return C;
+}
 
 int main(int argc, char*argv[]){ 
     

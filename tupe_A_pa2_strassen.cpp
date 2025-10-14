@@ -159,6 +159,8 @@ int main(int argc, char*argv[]){
     if(argc != 2){
         // ie. if the user does not input exactly 2 arguments in the command line then we will return the program here with a meaningful meassage stating the problem;
         cout << "The program expects exactly 2 command line arguments, please bind to this conditon for the program to run ";
+
+        return 0;
     }
 
     int n = stoi(argv[1]); // Talking the command line argument and storing the first value to n after converting it from a string to an integer (since the command line values are treated as string values).
@@ -192,12 +194,18 @@ int main(int argc, char*argv[]){
     //         cout << B[i][j] << " ";   
     //     }cout << endl;
     // }
+    cout << "MATRIX A" << endl ;
+    printMatrix(A, n);
+    cout << endl;
+    cout << "MATRIX A" << endl ;
+    printMatrix(B, n);
+    cout << endl;
 
     // Compute A*B using the standard and strassen's matrix multiplication
     auto C_std = stdMatrixMul(n, A, B);
     
 
-
+    // Padding the input matrices if their size is not a factor of 2^k since strassen's algorithm works recursively dividing the size from n to n/2.
     int m = 1;
     while (m < n) m *= 2;
 
@@ -224,14 +232,18 @@ int main(int argc, char*argv[]){
     cout << "The Standard Matrix multiplication of matrix A and B is : " << endl;
     printMatrix(C_std, n);
     cout << endl << endl;
-    if(n%2 == 0){
-        cout << "The Strassen's Matrix multiplication of matrix A and B is : " << endl;
-        printMatrix(C_strassen, n); // print the C_strassen incase n is divisible by 2
-    }
-    else{
-        cout << "The Strassen's Matrix multiplication of matrix A and B is : " << endl;
-        printMatrix(C_pad, n); // print the C_pad incase n is not divisible by 2
-    }
+    // if(n%2 == 0){
+    //     cout << "The Strassen's Matrix multiplication of matrix A and B is : " << endl;
+    //     printMatrix(C_strassen, n); // print the C_strassen incase n is divisible by 2
+    // }
+    // else{
+    //     cout << "The Strassen's Matrix multiplication of matrix A and B is : " << endl;
+    //     printMatrix(C_pad, n); // print the C_pad incase n is not divisible by 2
+    // }
+
+    cout << "The Strassen's Matrix multiplication of matrix A and B is : " << endl;
+    printMatrix(C_strassen, n);
+    cout << endl;
 
     return 0;
 }

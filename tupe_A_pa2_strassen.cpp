@@ -76,6 +76,84 @@ vector<vector<long long>> combineMatrix(
     return C;
 }
 
+
+vector<vector<long long>> strassenMultiply(const vector<vector<long long>>& A,const vector<vector<long long>>& B){
+// We have created helper functions to evaluate the strassen's intermediate matrices like addMatrix, subMatrix,splitMatrices and combineSubMatrices
+// Compute A*B using the Strassen's matrix multiplication
+    
+    // Base Case : n = 1 ==> Simply return 
+    // A[0][0] * B[0][0]
+
+    if(A.size() == 1)
+    {
+        return{{A[0][0] * B[0][0]}};
+    }
+    // Else split the matrix into 4 parts of n/2 size and use the strassen's equations to solve the mstrix multiplication
+    int n = A.size();
+    int k = n / 2;
+
+    vector<vector<long long>> 
+        A11(k, vector<long long>(k)), A12(k, vector<long long>(k)),
+        A21(k, vector<long long>(k)), A22(k, vector<long long>(k)),
+        B11(k, vector<long long>(k)), B12(k, vector<long long>(k)),
+        B21(k, vector<long long>(k)), B22(k, vector<long long>(k));
+
+    splitMatrix(A, A11, A12, A21, A22);
+    splitMatrix(B, B11, B12, B21, B22);
+
+    // Evaluate M1 - M7 as per strassen's given equations.
+    // Note : auto is a keyword that automatically takes the type of the variable from the RHS.
+    auto M1 = strassenMultiply(addMatrix(A11, A22), addMatrix(B11, B22));
+    auto M2 = strassenMultiply(addMatrix(A21, A22), B11);
+    auto M3 = strassenMultiply(A11, subMatrix(B12, B22));
+    auto M4 = strassenMultiply(A22, subMatrix(B21, B11));
+    auto M5 = strassenMultiply(addMatrix(A11, A12), B22);
+    auto M6 = strassenMultiply(subMatrix(A21, A11), addMatrix(B11, B12));
+    auto M7 = strassenMultiply(subMatrix(A12, A22), addMatrix(B21, B22));
+
+    auto C11 = addMatrix(subMatrix(addMatrix(M1, M4), M5), M7);
+    auto C12 = addMatrix(M3, M5);
+    auto C21 = addMatrix(M2, M4);
+    auto C22 = addMatrix(subMatrix(addMatrix(M1, M3), M2), M6);
+
+    return combineMatrix(C11, C12, C21, C22);
+
+}
+
+vector<vector<long long>> stdMatrixMul(int n, const vector<vector<long long>>& A,const vector<vector<long long>>& B){
+    // Initialize the result matrix C :
+    vector<vector<long long>> C(n, vector<long long>(n, 0)); // We used long type to make sure integer overflow does not happen and we can hold a big integer value.
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            for (int k = 0; k < n; k++) {
+                C[i][j] += (long long)A[i][k] * B[k][j]; // Type casting to long long to ensure large elements fit in.
+            }
+        }
+    }
+    // This is a O(N^3) solution since we are using 3 nested for loops.
+
+    // Printing the resulting C matrix :
+    // cout << "Matrix C : " << endl;
+    // for (int i = 0; i < n; i++) {
+    //     for (int j = 0; j < n; j++) {
+    //         cout << C[i][j] << " ";   
+    //     }cout << endl;
+    // }
+
+    return C;
+
+}
+
+void printMatrix(vector<vector<long long>> A, int n){
+    for(int i = 0; i<n; i++){
+        for (int j = 0; j < n; j++)
+        {
+            cout << A[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+
 int main(int argc, char*argv[]){ 
     
     if(argc != 2){
@@ -89,10 +167,10 @@ int main(int argc, char*argv[]){
     // Check for integer overflow within the matrix
     int max_val = INT_MAX / n;
 
-    // Generate Random matrivces A and B :
+    // Generate Random matrices A and B :
     srand(time(0)); // seed random numbers
-    vector<vector<int>> A(n, vector<int>(n));
-    vector<vector<int>> B(n, vector<int>(n));
+    vector<vector<long long>> A(n, vector<long long>(n));
+    vector<vector<long long>> B(n, vector<long long>(n));
 
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
@@ -108,7 +186,6 @@ int main(int argc, char*argv[]){
     //         cout << A[i][j] << " ";   
     //     }cout << endl;
     // }
-
     // cout << "Matrix B : " << endl;
     // for (int i = 0; i < n; i++) {
     //     for (int j = 0; j < n; j++) {
@@ -116,42 +193,45 @@ int main(int argc, char*argv[]){
     //     }cout << endl;
     // }
 
+    // Compute A*B using the standard and strassen's matrix multiplication
+    auto C_std = stdMatrixMul(n, A, B);
+    
 
-    // Initialize the result matrix C :
-    vector<vector<long long>> C(n, vector<long long>(n, 0)); // We used long type to make sure integer overflow does not happen and we can hold a big integer value.
 
+    int m = 1;
+    while (m < n) m *= 2;
 
-    // Compute A*B using the standard matrix multiplication
-    for (int i = 0; i < n; i++) {
+    // pad if needed
+    vector<vector<long long>> A_pad(m, vector<long long>(m, 0));
+    vector<vector<long long>> B_pad(m, vector<long long>(m, 0));
+    for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++) {
-            for (int k = 0; k < n; k++) {
-                C[i][j] += (long long)A[i][k] * B[k][j]; // Type casting to long long to ensure large elements fit in.
-            }
+            A_pad[i][j] = A[i][j];
+            B_pad[i][j] = B[i][j];
         }
+
+    // multiply
+    auto C_pad = strassenMultiply(A_pad, B_pad);
+
+    // trim to n×n
+    vector<vector<long long>> C_strassen(n, vector<long long>(n));
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            C_strassen[i][j] = C_pad[i][j];
+
+
+    // Printing the resulting matrices
+    cout << "The Standard Matrix multiplication of matrix A and B is : " << endl;
+    printMatrix(C_std, n);
+    cout << endl << endl;
+    if(n%2 == 0){
+        cout << "The Strassen's Matrix multiplication of matrix A and B is : " << endl;
+        printMatrix(C_strassen, n); // print the C_strassen incase n is divisible by 2
     }
-    // This is a O(N^3) solution since we are using 3 nested for loops.
-
-    // Printing the resulting C matrix :
-    cout << "Matrix C : " << endl;
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            cout << C[i][j] << " ";   
-        }cout << endl;
+    else{
+        cout << "The Strassen's Matrix multiplication of matrix A and B is : " << endl;
+        printMatrix(C_pad, n); // print the C_pad incase n is not divisible by 2
     }
 
-    // Compute A*B using the Strassen's matrix multiplication
-    
-    // Base Case : n = 1 ==> Simply return 
-    // A[0][0] * B[0][0]
-
-    vector<vector<long long>> strassenMultiply(const vector<vector<long long>>& A,const vector<vector<long long>>& B);
-    // We are gonna create helper functions to evaluate the strassen's intermediate matrices like addMatrix, subMatrix,splitMatrices and combineSubMatrices
-
-    
-
-    
-
-
- 
     return 0;
 }

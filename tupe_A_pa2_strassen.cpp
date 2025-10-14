@@ -66,6 +66,14 @@ int main(int argc, char*argv[]){
     }
 
     // Compute A*B using the Strassen's matrix multiplication
+    
+    // Base Case : n = 1 ==> Simply return 
+    // A[0][0] * B[0][0]
+
+    vector<vector<long long>> strassenMultiply(const vector<vector<long long>>& A,const vector<vector<long long>>& B);
+
+    
+
 
  
     return 0;

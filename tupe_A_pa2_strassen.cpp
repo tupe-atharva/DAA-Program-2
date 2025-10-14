@@ -3,7 +3,75 @@
 #include<math.h>
 #include<climits>
 using namespace std;
- 
+
+// Helper Function 1 : addMAtrix
+vector<vector<long long>> addMatrix(
+    const vector<vector<long long>>& A,
+    const vector<vector<long long>>& B) 
+    {
+        int n = A.size();
+        vector<vector<long long>> C(n, vector<long long>(n));
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                C[i][j] = A[i][j] + B[i][j];
+        return C;
+    }
+
+// Helper function 2 : subMatrix
+vector<vector<long long>> subMatrix(
+    const vector<vector<long long>>& A,
+    const vector<vector<long long>>& B) 
+    {
+        int n = A.size();
+        vector<vector<long long>> C(n, vector<long long>(n));
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                C[i][j] = A[i][j] - B[i][j];
+        return C;
+    }
+
+// Helper function 3 : splitMatrix
+void splitMatrix(const vector<vector<long long>>& A,
+    vector<vector<long long>>& A11,
+    vector<vector<long long>>& A12,
+    vector<vector<long long>>& A21,
+    vector<vector<long long>>& A22) 
+    {
+        int n = A.size() / 2;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                A11[i][j] = A[i][j];
+                A12[i][j] = A[i][j + n];
+                A21[i][j] = A[i + n][j];
+                A22[i][j] = A[i + n][j + n];
+            }
+        }
+    }
+
+
+// Helper function 4 : combineMatrix
+vector<vector<long long>> combineMatrix(
+    const vector<vector<long long>>& C11,
+    const vector<vector<long long>>& C12,
+    const vector<vector<long long>>& C21,
+    const vector<vector<long long>>& C22) 
+    {
+        int n = C11.size();
+        vector<vector<long long>> C(2 * n, vector<long long>(2 * n));
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                C[i][j] = C11[i][j];
+                C[i][j + n] = C12[i][j];
+                C[i + n][j] = C21[i][j];
+                C[i + n][j + n] = C22[i][j];
+            }
+        }
+        return C;
+    }
+
+
+
 int main(int argc, char*argv[]){ 
     
     if(argc != 2){
@@ -73,6 +141,9 @@ int main(int argc, char*argv[]){
     // A[0][0] * B[0][0]
 
     vector<vector<long long>> strassenMultiply(const vector<vector<long long>>& A,const vector<vector<long long>>& B);
+    // We are gonna create helper functions to evaluate the strassen's intermediate matrices like addMatrix, subMatrix,splitMatrices and combineSubMatrices
+
+    
 
     
 

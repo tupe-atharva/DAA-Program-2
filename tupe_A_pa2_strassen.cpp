@@ -194,10 +194,10 @@ int main(int argc, char*argv[]){
     //         cout << B[i][j] << " ";   
     //     }cout << endl;
     // }
-    cout << "MATRIX A" << endl ;
+    cout << "A = " << endl ;
     printMatrix(A, n);
     cout << endl;
-    cout << "MATRIX A" << endl ;
+    cout << "B = " << endl ;
     printMatrix(B, n);
     cout << endl;
 
@@ -229,19 +229,11 @@ int main(int argc, char*argv[]){
 
 
     // Printing the resulting matrices
-    cout << "The Standard Matrix multiplication of matrix A and B is : " << endl;
+    cout << "The Standard Matrix multiplication A*B = " << endl;
     printMatrix(C_std, n);
-    cout << endl << endl;
-    // if(n%2 == 0){
-    //     cout << "The Strassen's Matrix multiplication of matrix A and B is : " << endl;
-    //     printMatrix(C_strassen, n); // print the C_strassen incase n is divisible by 2
-    // }
-    // else{
-    //     cout << "The Strassen's Matrix multiplication of matrix A and B is : " << endl;
-    //     printMatrix(C_pad, n); // print the C_pad incase n is not divisible by 2
-    // }
+    cout << endl;
 
-    cout << "The Strassen's Matrix multiplication of matrix A and B is : " << endl;
+    cout << "The Strassen's Matrix multiplication A*B = : " << endl;
     printMatrix(C_strassen, n);
     cout << endl;
 

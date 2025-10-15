@@ -28,6 +28,7 @@ int main(int argc, char*argv[]){
         return 0;
     }
 
+    // Check if the input n is divisble by 3 and 2.
     if(n%2 !=0 || n%3 != 0){
         cout << "Enter the value of n of the order 6k, ie. a number divisble by both 2 and 3" << endl;
         return 0;

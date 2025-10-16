@@ -12,15 +12,16 @@ vector<vector<long long>> addMatrix(
 {
     int n = A.size();
     vector<vector<long long>> C(n, vector<long long>(n));
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < n; j++)
+    for (int i = 0; i < n; i++){
+        for (int j = 0; j < n; j++){
             C[i][j] = A[i][j] + B[i][j];
+        }
+    }
     return C;
 }
 
 // Helper function 2 : subMatrix
 // Takes 2 matrices A and B as input and subtracts their elements
-
 vector<vector<long long>> subMatrix(
     const vector<vector<long long>>& A,
     const vector<vector<long long>>& B) 
@@ -35,7 +36,6 @@ vector<vector<long long>> subMatrix(
 
 // Helper function 3 : splitMatrix
 // Takes 2 matrices A and B as input and splits them into A11, A12, A21, A22 and each of them have size n/2;
-
 void splitMatrix(const vector<vector<long long>>& A,
     vector<vector<long long>>& A11,
     vector<vector<long long>>& A12,
@@ -52,7 +52,6 @@ void splitMatrix(const vector<vector<long long>>& A,
         }
     }
 }
-
 
 // Helper function 4 : combineMatrix
 // This helper function takes 4 submatrices ie. C11, C12, C21, C22 as input and combines them 
@@ -76,7 +75,6 @@ vector<vector<long long>> combineMatrix(
     return C;
 }
 
-
 vector<vector<long long>> strassenMultiply(const vector<vector<long long>>& A,const vector<vector<long long>>& B){
 // We have created helper functions to evaluate the strassen's intermediate matrices like addMatrix, subMatrix,splitMatrices and combineSubMatrices
 // Compute A*B using the Strassen's matrix multiplication
@@ -93,6 +91,7 @@ vector<vector<long long>> strassenMultiply(const vector<vector<long long>>& A,co
     int k = n / 2;
 
     vector<vector<long long>> 
+        // Decalring intermediate matrices A11, A21, B11, B21
         A11(k, vector<long long>(k)), A12(k, vector<long long>(k)),
         A21(k, vector<long long>(k)), A22(k, vector<long long>(k)),
         B11(k, vector<long long>(k)), B12(k, vector<long long>(k)),
